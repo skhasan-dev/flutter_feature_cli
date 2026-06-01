@@ -1,6 +1,6 @@
 name: flutter_feature_cli
 description: A CLI tool for generating scalable Flutter feature architecture with configurable paths, barrel exports, and clean project organization.
-version: 1.0.1
+version: 1.0.2
 
 repository: https://github.com/skhasan-dev/flutter_feature_cli
 homepage: https://github.com/skhasan-dev/flutter_feature_cli
