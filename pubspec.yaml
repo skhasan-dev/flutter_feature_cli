@@ -10,7 +10,7 @@ environment:
   sdk: ^3.8.0
 
 executables:
-  create:
+  flutter_feature_cli:
 
 dependencies:
   yaml: ^3.1.3
