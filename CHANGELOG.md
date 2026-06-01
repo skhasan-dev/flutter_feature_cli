@@ -1,5 +1,23 @@
 # Changelog
 
+## 1.0.2
+
+### Fixes
+
+* Standardized CLI executable naming.
+* Renamed executable from `create` to `flutter_feature_cli`.
+* Fixed command execution when installed as a package dependency.
+* Updated command syntax to:
+
+```bash
+dart run flutter_feature_cli create <feature_name>
+```
+
+### Improvements
+
+* Updated README examples and usage instructions.
+* Improved CLI structure to support future commands.
+
 ## 1.0.1
 
 ### Improvements

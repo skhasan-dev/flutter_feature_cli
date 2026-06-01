@@ -24,7 +24,7 @@ Add the package to your Flutter project:
 
 ```yaml
 dev_dependencies:
-  flutter_feature_cli: ^1.0.0
+  flutter_feature_cli: ^1.0.2
 ```
 
 Install dependencies:
@@ -66,7 +66,7 @@ lib/features
 Generate a feature:
 
 ```bash
-dart run flutter_feature_cli:create authentication
+dart run flutter_feature_cli create authentication
 ```
 
 Generated structure:
@@ -94,7 +94,7 @@ lib/
 You can override the configured path directly from the command:
 
 ```bash
-dart run flutter_feature_cli:create authentication --path=lib/src/ai_features
+dart run flutter_feature_cli create authentication --path=lib/src/ai_features
 ```
 
 The command-line path always takes precedence over the path configured in `pubspec.yaml`.
@@ -113,7 +113,7 @@ flutter_feature_cli:
 and running:
 
 ```bash
-dart run flutter_feature_cli:create user_profile
+dart run flutter_feature_cli create user_profile
 ```
 
 creates:
@@ -123,6 +123,32 @@ lib/
 └── src/
     └── features/
         └── user_profile/
+```
+
+---
+
+## 💻 Commands
+
+Create a feature:
+
+```bash
+dart run flutter_feature_cli create <feature_name>
+```
+
+Create a feature in a custom path:
+
+```bash
+dart run flutter_feature_cli create <feature_name> --path=<path>
+```
+
+Examples:
+
+```bash
+dart run flutter_feature_cli create authentication
+
+dart run flutter_feature_cli create user_profile
+
+dart run flutter_feature_cli create ai_chat --path=lib/src/ai_features
 ```
 
 ---
