@@ -1,7 +1,20 @@
 import 'dart:io';
 import 'package:path/path.dart' as p;
 
+/// Generates a Flutter feature directory structure.
 class FeatureGenerator {
+  /// Creates a feature module with the given [featureName].
+  ///
+  /// The generated structure includes:
+  /// - Data sources
+  /// - Entities
+  /// - Repositories
+  /// - View models
+  /// - Widgets
+  /// - Barrel exports (`index.dart`)
+  ///
+  /// By default features are created in `lib/features`,
+  /// unless a custom [baseFeaturesPath] is provided.
   Future<void> generate({
     required String featureName,
     String baseFeaturesPath = 'lib/features',
