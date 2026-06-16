@@ -10,25 +10,36 @@ void main() {
 
     setUp(() {
       originalDirectory = Directory.current;
+
       tempDir = Directory.systemTemp.createTempSync();
+
       Directory.current = tempDir;
     });
 
     tearDown(() {
       Directory.current = originalDirectory;
-      tempDir.deleteSync(recursive: true);
+
+      if (tempDir.existsSync()) {
+        tempDir.deleteSync(recursive: true);
+      }
     });
 
-    test('returns default path when pubspec does not exist', () {
-      expect(ConfigReader.getPath(), 'lib/features');
+    test('returns defaults when pubspec does not exist', () {
+      final config = ConfigReader.getConfig();
+
+      expect(config.path, 'lib/features');
+      expect(config.template, 'partial_clean');
     });
 
-    test('returns default path when config is missing', () {
+    test('returns defaults when config is missing', () {
       File('pubspec.yaml').writeAsStringSync('''
 name: test_app
 ''');
 
-      expect(ConfigReader.getPath(), 'lib/features');
+      final config = ConfigReader.getConfig();
+
+      expect(config.path, 'lib/features');
+      expect(config.template, 'partial_clean');
     });
 
     test('returns configured path', () {
@@ -39,7 +50,39 @@ flutter_feature_cli:
   path: lib/src/ai_features
 ''');
 
-      expect(ConfigReader.getPath(), 'lib/src/ai_features');
+      final config = ConfigReader.getConfig();
+
+      expect(config.path, 'lib/src/ai_features');
+      expect(config.template, 'partial_clean');
+    });
+
+    test('returns configured template', () {
+      File('pubspec.yaml').writeAsStringSync('''
+name: test_app
+
+flutter_feature_cli:
+  template: clean_architecture
+''');
+
+      final config = ConfigReader.getConfig();
+
+      expect(config.path, 'lib/features');
+      expect(config.template, 'clean_architecture');
+    });
+
+    test('returns configured path and template', () {
+      File('pubspec.yaml').writeAsStringSync('''
+name: test_app
+
+flutter_feature_cli:
+  path: lib/src/features
+  template: mvvm
+''');
+
+      final config = ConfigReader.getConfig();
+
+      expect(config.path, 'lib/src/features');
+      expect(config.template, 'mvvm');
     });
   });
 }

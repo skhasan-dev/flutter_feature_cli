@@ -40,9 +40,11 @@ Future<void> main(List<String> args) async {
 
 Future<void> _handleCreate(List<String> args) async {
   try {
+    final config = ConfigReader.getConfig();
+
     final parser = ArgParser()
-      ..addOption('template', abbr: 't', defaultsTo: 'partial_clean')
-      ..addOption('path', abbr: 'p', defaultsTo: ConfigReader.getPath());
+      ..addOption('template', abbr: 't', defaultsTo: config.template)
+      ..addOption('path', abbr: 'p', defaultsTo: config.path);
 
     final results = parser.parse(args);
 

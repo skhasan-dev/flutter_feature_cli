@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter_feature_cli/src/configs/index.dart' show CliConfig;
 import 'package:yaml/yaml.dart';
 
 /// Reads `flutter_feature_cli` configuration from `pubspec.yaml`.
@@ -12,11 +13,14 @@ class ConfigReader {
   /// - `pubspec.yaml` does not exist.
   /// - `flutter_feature_cli` configuration is missing.
   /// - `path` is not specified.
-  static String getPath() {
+  static CliConfig getConfig() {
     final file = File('pubspec.yaml');
 
     if (!file.existsSync()) {
-      return 'lib/features';
+      return const CliConfig(
+        path: 'lib/features',
+        template: 'partial_clean',
+      );
     }
 
     final yaml = loadYaml(file.readAsStringSync());
@@ -24,9 +28,15 @@ class ConfigReader {
     final config = yaml[_configKey];
 
     if (config == null) {
-      return 'lib/features';
+      return const CliConfig(
+        path: 'lib/features',
+        template: 'partial_clean',
+      );
     }
 
-    return config['path']?.toString() ?? 'lib/features';
+    return CliConfig(
+      path: config['path']?.toString() ?? 'lib/features',
+      template: config['template']?.toString() ?? 'partial_clean',
+    );
   }
 }

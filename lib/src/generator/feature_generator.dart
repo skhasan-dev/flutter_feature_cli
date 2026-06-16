@@ -36,8 +36,17 @@ class FeatureGenerator {
 
     if (template == null) {
       throw ArgumentError(
-        'Unknown template "$templateName". '
-        'Available templates: ${templates.keys.join(', ')}',
+        '''
+❌ Unknown template "$templateName".
+
+Available templates:
+${templates.keys.map((e) => ' - $e').join('\n')}
+
+You can configure a default template in pubspec.yaml:
+
+flutter_feature_cli:
+  template: ${templates.keys.first}
+''',
       );
     }
 
