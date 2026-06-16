@@ -1,6 +1,16 @@
 import 'dart:io';
 
-import 'package:flutter_feature_cli/flutter_feature_cli.dart';
+import 'package:args/args.dart';
+import 'package:flutter_feature_cli/src/configs/index.dart' show ConfigReader;
+import 'package:flutter_feature_cli/src/generator/index.dart'
+    show FeatureGenerator;
+import 'package:flutter_feature_cli/src/templates/index.dart'
+    show
+        CleanArchitectureTemplate,
+        MvcTemplate,
+        MvvmTemplate,
+        PartialCleanTemplate,
+        TemplateNames;
 
 Future<void> main(List<String> args) async {
   if (args.isEmpty) {
@@ -12,7 +22,7 @@ Future<void> main(List<String> args) async {
 
   switch (command) {
     case 'create':
-      await _handleCreate(args);
+      await _handleCreate(args.skip(1).toList());
       break;
 
     case '--help':
@@ -29,26 +39,37 @@ Future<void> main(List<String> args) async {
 }
 
 Future<void> _handleCreate(List<String> args) async {
-  if (args.length < 2) {
-    stderr.writeln('Feature name is required.');
+  try {
+    final parser = ArgParser()
+      ..addOption('template', abbr: 't', defaultsTo: 'partial_clean')
+      ..addOption('path', abbr: 'p', defaultsTo: ConfigReader.getPath());
+
+    final results = parser.parse(args);
+
+    if (results.rest.isEmpty) {
+      stderr.writeln('Feature name is required.');
+      _printUsage();
+      exit(1);
+    }
+
+    final featureName = results.rest.first;
+
+    await FeatureGenerator({
+      TemplateNames.partialClean: PartialCleanTemplate(),
+      TemplateNames.cleanArchitecture: CleanArchitectureTemplate(),
+      TemplateNames.mvc: MvcTemplate(),
+      TemplateNames.mvvm: MvvmTemplate(),
+    }).generate(
+      featureName: featureName,
+      templateName: results['template'] as String,
+      baseFeaturesPath: results['path'] as String,
+    );
+  } on FormatException catch (e) {
+    stderr.writeln('❌ ${e.message}');
+    stderr.writeln('');
     _printUsage();
     exit(1);
   }
-
-  final featureName = args[1];
-
-  var path = ConfigReader.getPath();
-
-  for (final arg in args.skip(2)) {
-    if (arg.startsWith('--path=')) {
-      path = arg.substring('--path='.length);
-    }
-  }
-
-  await FeatureGenerator().generate(
-    featureName: featureName,
-    baseFeaturesPath: path,
-  );
 }
 
 void _printUsage() {
@@ -59,13 +80,26 @@ Usage:
   flutter_feature_cli create <feature_name>
 
 Options:
-  --path=<path>
+  --template, -t   Feature template
+
+  --path, -p       Output path
+
+Templates:
+  partial_clean
+  clean_architecture
+  mvc
+  mvvm
 
 Examples:
+
   flutter_feature_cli create auth
 
-  flutter_feature_cli create user_profile
+  flutter_feature_cli create auth --template clean_architecture
 
-  flutter_feature_cli create ai_chat --path=lib/src/ai_features
+  flutter_feature_cli create auth -t mvvm
+
+  flutter_feature_cli create auth --path lib/src/features
+
+  flutter_feature_cli create auth -t clean_architecture -p lib/src/features
 ''');
 }
