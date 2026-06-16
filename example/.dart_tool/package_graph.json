@@ -1,0 +1,65 @@
+{
+  "roots": [
+    "flutter_feature_cli_example"
+  ],
+  "packages": [
+    {
+      "name": "flutter_feature_cli_example",
+      "version": "0.0.0",
+      "dependencies": [],
+      "devDependencies": [
+        "flutter_feature_cli",
+        "path"
+      ]
+    },
+    {
+      "name": "flutter_feature_cli",
+      "version": "1.0.2",
+      "dependencies": [
+        "path",
+        "yaml"
+      ]
+    },
+    {
+      "name": "path",
+      "version": "1.9.1",
+      "dependencies": []
+    },
+    {
+      "name": "yaml",
+      "version": "3.1.3",
+      "dependencies": [
+        "collection",
+        "source_span",
+        "string_scanner"
+      ]
+    },
+    {
+      "name": "string_scanner",
+      "version": "1.4.1",
+      "dependencies": [
+        "source_span"
+      ]
+    },
+    {
+      "name": "source_span",
+      "version": "1.10.2",
+      "dependencies": [
+        "collection",
+        "path",
+        "term_glyph"
+      ]
+    },
+    {
+      "name": "term_glyph",
+      "version": "1.2.2",
+      "dependencies": []
+    },
+    {
+      "name": "collection",
+      "version": "1.19.1",
+      "dependencies": []
+    }
+  ],
+  "configVersion": 1
+}
