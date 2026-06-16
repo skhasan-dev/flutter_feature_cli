@@ -1,5 +1,43 @@
 # Changelog
 
+## 1.1.0
+
+### New Features
+
+* Added template-based feature generation.
+* Added support for:
+
+  * `partial_clean`
+  * `clean_architecture`
+  * `mvc`
+  * `mvvm`
+* Added template selection via:
+
+  ```bash
+  dart run flutter_feature_cli create auth --template clean_architecture
+  ```
+* Added shorthand template flag:
+
+  ```bash
+  dart run flutter_feature_cli create auth -t clean_architecture
+  ```
+
+### Improvements
+
+* Added custom output path support:
+
+  ```bash
+  dart run flutter_feature_cli create auth --path lib/src/features
+  ```
+* Added shorthand path flag:
+
+  ```bash
+  dart run flutter_feature_cli create auth -p lib/src/features
+  ```
+* Improved CLI argument parsing.
+* Improved CLI help and error messages.
+* Improved internal architecture to support future templates and generators.
+
 ## 1.0.2
 
 ### Fixes
