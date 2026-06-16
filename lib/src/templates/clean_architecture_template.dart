@@ -12,12 +12,10 @@ class CleanArchitectureTemplate implements FeatureTemplate {
     'data/data_sources',
     'data/models',
     'data/repositories',
-
     'domain',
     'domain/entities',
     'domain/repositories',
     'domain/use_cases',
-
     'presentation',
     'presentation/pages',
     'presentation/view_models',
