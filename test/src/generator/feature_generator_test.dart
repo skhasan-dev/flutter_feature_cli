@@ -67,11 +67,41 @@ void main() {
       expect(Directory('${tempDir.path}/auth/view_models').existsSync(), true);
     });
 
+    test('creates feature using custom template', () async {
+      final generator = FeatureGenerator({
+        TemplateNames.custom: CustomTemplate({
+          'presentation/views': ['{feature}_view.dart'],
+        }),
+      });
+
+      await generator.generate(
+        featureName: 'auth',
+        templateName: TemplateNames.custom,
+        baseFeaturesPath: tempDir.path,
+      );
+
+      expect(
+        Directory('${tempDir.path}/auth/presentation/views').existsSync(),
+        true,
+      );
+    });
+
     test('throws for unknown template', () {
       expect(
         () => createGenerator().generate(
           featureName: 'auth',
           templateName: 'invalid_template',
+          baseFeaturesPath: tempDir.path,
+        ),
+        throwsArgumentError,
+      );
+    });
+
+    test('throws for an invalid feature name', () {
+      expect(
+        () => createGenerator().generate(
+          featureName: '../evil',
+          templateName: TemplateNames.partialClean,
           baseFeaturesPath: tempDir.path,
         ),
         throwsArgumentError,

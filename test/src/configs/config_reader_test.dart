@@ -84,5 +84,63 @@ flutter_feature_cli:
       expect(config.path, 'lib/src/features');
       expect(config.template, 'mvvm');
     });
+
+    test('returns null custom when not configured', () {
+      File('pubspec.yaml').writeAsStringSync('''
+name: test_app
+
+flutter_feature_cli:
+  template: mvvm
+''');
+
+      final config = ConfigReader.getConfig();
+
+      expect(config.custom, isNull);
+    });
+
+    test('returns configured custom structure', () {
+      File('pubspec.yaml').writeAsStringSync('''
+name: test_app
+
+flutter_feature_cli:
+  template: custom
+  custom:
+    presentation/views:
+      - "{feature}_view.dart"
+    presentation/widgets: []
+''');
+
+      final config = ConfigReader.getConfig();
+
+      expect(config.template, 'custom');
+
+      expect(config.custom, {
+        'presentation/views': ['{feature}_view.dart'],
+        'presentation/widgets': <String>[],
+      });
+    });
+
+    test('throws when custom is not a map', () {
+      File('pubspec.yaml').writeAsStringSync('''
+name: test_app
+
+flutter_feature_cli:
+  custom: "not a map"
+''');
+
+      expect(() => ConfigReader.getConfig(), throwsFormatException);
+    });
+
+    test('throws when a custom folder value is not a list', () {
+      File('pubspec.yaml').writeAsStringSync('''
+name: test_app
+
+flutter_feature_cli:
+  custom:
+    presentation/views: "not a list"
+''');
+
+      expect(() => ConfigReader.getConfig(), throwsFormatException);
+    });
   });
 }
