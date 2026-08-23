@@ -4,7 +4,7 @@ environment:
   sdk: ^3.0.0
   
 dev_dependencies:
-  flutter_feature_cli: ^1.1.0
+  flutter_feature_cli: ^1.1.1
 
 flutter_feature_cli:
   path: lib/src/features
