@@ -21,6 +21,7 @@ class PartialCleanTemplate implements FeatureTemplate {
   Future<void> generate({
     required String featureName,
     required String basePath,
+    bool force = false,
   }) async {
     final className = StringUtils.pascalCase(featureName);
 
@@ -41,11 +42,14 @@ class PartialCleanTemplate implements FeatureTemplate {
     // DATA SOURCE
     //
 
-    FileGenerator.create('$dataSourcePath/${featureName}_data_source.dart', '''
+    FileGenerator.create(
+        '$dataSourcePath/${featureName}_data_source.dart',
+        '''
 abstract class ${className}DataSource {
 
 }
-''');
+''',
+        force: force);
 
     FileGenerator.create(
       '$dataSourcePath/${featureName}_data_source_impl.dart',
@@ -57,22 +61,29 @@ class ${className}DataSourceImpl
 
 }
 ''',
+      force: force,
     );
 
-    FileGenerator.create('$dataSourcePath/index.dart', '''
+    FileGenerator.create(
+        '$dataSourcePath/index.dart',
+        '''
 export '${featureName}_data_source.dart';
 export '${featureName}_data_source_impl.dart';
-''');
+''',
+        force: force);
 
     //
     // REPOSITORY
     //
 
-    FileGenerator.create('$repositoryPath/${featureName}_repository.dart', '''
+    FileGenerator.create(
+        '$repositoryPath/${featureName}_repository.dart',
+        '''
 abstract class ${className}Repository {
 
 }
-''');
+''',
+        force: force);
 
     FileGenerator.create(
       '$repositoryPath/${featureName}_repository_impl.dart',
@@ -84,57 +95,70 @@ class ${className}RepositoryImpl
 
 }
 ''',
+      force: force,
     );
 
-    FileGenerator.create('$repositoryPath/index.dart', '''
+    FileGenerator.create(
+        '$repositoryPath/index.dart',
+        '''
 export '${featureName}_repository.dart';
 export '${featureName}_repository_impl.dart';
-''');
+''',
+        force: force);
 
     //
     // ENTITIES
     //
 
-    FileGenerator.create('$entitiesPath/index.dart', '');
+    FileGenerator.create('$entitiesPath/index.dart', '', force: force);
 
     //
     // VIEW MODELS
     //
 
-    FileGenerator.create('$viewModelsPath/index.dart', '');
+    FileGenerator.create('$viewModelsPath/index.dart', '', force: force);
 
     //
     // WIDGETS
     //
 
-    FileGenerator.create('$widgetsPath/index.dart', '');
+    FileGenerator.create('$widgetsPath/index.dart', '', force: force);
 
     //
     // DATA INDEX
     //
 
-    FileGenerator.create('$basePath/data/index.dart', '''
+    FileGenerator.create(
+        '$basePath/data/index.dart',
+        '''
 export 'data_sources/index.dart';
 export 'entities/index.dart';
 export 'repository/index.dart';
-''');
+''',
+        force: force);
 
     //
     // PRESENTATION INDEX
     //
 
-    FileGenerator.create('$presentationPath/index.dart', '''
+    FileGenerator.create(
+        '$presentationPath/index.dart',
+        '''
 export 'view_models/index.dart';
 export 'widgets/index.dart';
-''');
+''',
+        force: force);
 
     //
     // FEATURE INDEX
     //
 
-    FileGenerator.create('$basePath/index.dart', '''
+    FileGenerator.create(
+        '$basePath/index.dart',
+        '''
 export 'data/index.dart';
 export 'presentation/index.dart';
-''');
+''',
+        force: force);
   }
 }

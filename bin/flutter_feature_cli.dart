@@ -44,7 +44,8 @@ Future<void> _handleCreate(List<String> args) async {
 
     final parser = ArgParser()
       ..addOption('template', abbr: 't', defaultsTo: config.template)
-      ..addOption('path', abbr: 'p', defaultsTo: config.path);
+      ..addOption('path', abbr: 'p', defaultsTo: config.path)
+      ..addFlag('force', abbr: 'f', negatable: false);
 
     final results = parser.parse(args);
 
@@ -65,11 +66,15 @@ Future<void> _handleCreate(List<String> args) async {
       featureName: featureName,
       templateName: results['template'] as String,
       baseFeaturesPath: results['path'] as String,
+      force: results['force'] as bool,
     );
   } on FormatException catch (e) {
     stderr.writeln('❌ ${e.message}');
     stderr.writeln('');
     _printUsage();
+    exit(1);
+  } on ArgumentError catch (e) {
+    stderr.writeln(e.message);
     exit(1);
   }
 }
@@ -85,6 +90,8 @@ Options:
   --template, -t   Feature template
 
   --path, -p       Output path
+
+  --force, -f      Overwrite existing generated files
 
 Templates:
   partial_clean
@@ -103,5 +110,7 @@ Examples:
   flutter_feature_cli create auth --path lib/src/features
 
   flutter_feature_cli create auth -t clean_architecture -p lib/src/features
+
+  flutter_feature_cli create auth --force
 ''');
 }

@@ -26,6 +26,7 @@ class CleanArchitectureTemplate implements FeatureTemplate {
   Future<void> generate({
     required String featureName,
     required String basePath,
+    bool force = false,
   }) async {
     final className = StringUtils.pascalCase(featureName);
 
@@ -53,11 +54,14 @@ class CleanArchitectureTemplate implements FeatureTemplate {
     // DATA SOURCE
     //
 
-    FileGenerator.create('$dataSourcePath/${featureName}_data_source.dart', '''
+    FileGenerator.create(
+        '$dataSourcePath/${featureName}_data_source.dart',
+        '''
 abstract class ${className}DataSource {
 
 }
-''');
+''',
+        force: force);
 
     FileGenerator.create(
       '$dataSourcePath/${featureName}_data_source_impl.dart',
@@ -69,12 +73,16 @@ class ${className}DataSourceImpl
 
 }
 ''',
+      force: force,
     );
 
-    FileGenerator.create('$dataSourcePath/index.dart', '''
+    FileGenerator.create(
+        '$dataSourcePath/index.dart',
+        '''
 export '${featureName}_data_source.dart';
 export '${featureName}_data_source_impl.dart';
-''');
+''',
+        force: force);
 
     //
     // DOMAIN REPOSITORY
@@ -87,11 +95,15 @@ abstract class ${className}Repository {
 
 }
 ''',
+      force: force,
     );
 
-    FileGenerator.create('$domainRepositoriesPath/index.dart', '''
+    FileGenerator.create(
+        '$domainRepositoriesPath/index.dart',
+        '''
 export '${featureName}_repository.dart';
-''');
+''',
+        force: force);
 
     //
     // DATA REPOSITORY
@@ -107,86 +119,102 @@ class ${className}RepositoryImpl
 
 }
 ''',
+      force: force,
     );
 
-    FileGenerator.create('$dataRepositoriesPath/index.dart', '''
+    FileGenerator.create(
+        '$dataRepositoriesPath/index.dart',
+        '''
 export '${featureName}_repository_impl.dart';
-''');
+''',
+        force: force);
 
     //
     // MODELS
     //
 
-    FileGenerator.create('$modelsPath/index.dart', '');
+    FileGenerator.create('$modelsPath/index.dart', '', force: force);
 
     //
     // ENTITIES
     //
 
-    FileGenerator.create('$entitiesPath/index.dart', '');
+    FileGenerator.create('$entitiesPath/index.dart', '', force: force);
 
     //
     // USE CASES
     //
 
-    FileGenerator.create('$useCasesPath/index.dart', '');
+    FileGenerator.create('$useCasesPath/index.dart', '', force: force);
 
     //
     // PAGES
     //
 
-    FileGenerator.create('$pagesPath/index.dart', '');
+    FileGenerator.create('$pagesPath/index.dart', '', force: force);
 
     //
     // VIEW MODELS
     //
 
-    FileGenerator.create('$viewModelsPath/index.dart', '');
+    FileGenerator.create('$viewModelsPath/index.dart', '', force: force);
 
     //
     // WIDGETS
     //
 
-    FileGenerator.create('$widgetsPath/index.dart', '');
+    FileGenerator.create('$widgetsPath/index.dart', '', force: force);
 
     //
     // DATA INDEX
     //
 
-    FileGenerator.create('$dataPath/index.dart', '''
+    FileGenerator.create(
+        '$dataPath/index.dart',
+        '''
 export 'data_sources/index.dart';
 export 'models/index.dart';
 export 'repositories/index.dart';
-''');
+''',
+        force: force);
 
     //
     // DOMAIN INDEX
     //
 
-    FileGenerator.create('$domainPath/index.dart', '''
+    FileGenerator.create(
+        '$domainPath/index.dart',
+        '''
 export 'entities/index.dart';
 export 'repositories/index.dart';
 export 'use_cases/index.dart';
-''');
+''',
+        force: force);
 
     //
     // PRESENTATION INDEX
     //
 
-    FileGenerator.create('$presentationPath/index.dart', '''
+    FileGenerator.create(
+        '$presentationPath/index.dart',
+        '''
 export 'pages/index.dart';
 export 'view_models/index.dart';
 export 'widgets/index.dart';
-''');
+''',
+        force: force);
 
     //
     // FEATURE INDEX
     //
 
-    FileGenerator.create('$basePath/index.dart', '''
+    FileGenerator.create(
+        '$basePath/index.dart',
+        '''
 export 'data/index.dart';
 export 'domain/index.dart';
 export 'presentation/index.dart';
-''');
+''',
+        force: force);
   }
 }

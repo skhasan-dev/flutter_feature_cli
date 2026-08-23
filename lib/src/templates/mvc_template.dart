@@ -18,6 +18,7 @@ class MvcTemplate implements FeatureTemplate {
   Future<void> generate({
     required String featureName,
     required String basePath,
+    bool force = false,
   }) async {
     final className = StringUtils.pascalCase(featureName);
 
@@ -34,43 +35,52 @@ class MvcTemplate implements FeatureTemplate {
     // CONTROLLER
     //
 
-    FileGenerator.create('$controllersPath/${featureName}_controller.dart', '''
+    FileGenerator.create(
+        '$controllersPath/${featureName}_controller.dart',
+        '''
 class ${className}Controller {
 
 }
-''');
+''',
+        force: force);
 
-    FileGenerator.create('$controllersPath/index.dart', '''
+    FileGenerator.create(
+        '$controllersPath/index.dart',
+        '''
 export '${featureName}_controller.dart';
-''');
+''',
+        force: force);
 
     //
     // MODELS
     //
 
-    FileGenerator.create('$modelsPath/index.dart', '');
+    FileGenerator.create('$modelsPath/index.dart', '', force: force);
 
     //
     // VIEWS
     //
 
-    FileGenerator.create('$viewsPath/index.dart', '');
+    FileGenerator.create('$viewsPath/index.dart', '', force: force);
 
     //
     // WIDGETS
     //
 
-    FileGenerator.create('$widgetsPath/index.dart', '');
+    FileGenerator.create('$widgetsPath/index.dart', '', force: force);
 
     //
     // ROOT INDEX
     //
 
-    FileGenerator.create('$basePath/index.dart', '''
+    FileGenerator.create(
+        '$basePath/index.dart',
+        '''
 export 'models/index.dart';
 export 'controllers/index.dart';
 export 'views/index.dart';
 export 'widgets/index.dart';
-''');
+''',
+        force: force);
   }
 }

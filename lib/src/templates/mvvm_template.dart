@@ -18,6 +18,7 @@ class MvvmTemplate implements FeatureTemplate {
   Future<void> generate({
     required String featureName,
     required String basePath,
+    bool force = false,
   }) async {
     final className = StringUtils.pascalCase(featureName);
 
@@ -34,43 +35,52 @@ class MvvmTemplate implements FeatureTemplate {
     // VIEW MODEL
     //
 
-    FileGenerator.create('$viewModelsPath/${featureName}_view_model.dart', '''
+    FileGenerator.create(
+        '$viewModelsPath/${featureName}_view_model.dart',
+        '''
 class ${className}ViewModel {
 
 }
-''');
+''',
+        force: force);
 
-    FileGenerator.create('$viewModelsPath/index.dart', '''
+    FileGenerator.create(
+        '$viewModelsPath/index.dart',
+        '''
 export '${featureName}_view_model.dart';
-''');
+''',
+        force: force);
 
     //
     // MODELS
     //
 
-    FileGenerator.create('$modelsPath/index.dart', '');
+    FileGenerator.create('$modelsPath/index.dart', '', force: force);
 
     //
     // VIEWS
     //
 
-    FileGenerator.create('$viewsPath/index.dart', '');
+    FileGenerator.create('$viewsPath/index.dart', '', force: force);
 
     //
     // WIDGETS
     //
 
-    FileGenerator.create('$widgetsPath/index.dart', '');
+    FileGenerator.create('$widgetsPath/index.dart', '', force: force);
 
     //
     // ROOT INDEX
     //
 
-    FileGenerator.create('$basePath/index.dart', '''
+    FileGenerator.create(
+        '$basePath/index.dart',
+        '''
 export 'models/index.dart';
 export 'view_models/index.dart';
 export 'views/index.dart';
 export 'widgets/index.dart';
-''');
+''',
+        force: force);
   }
 }
