@@ -1,5 +1,26 @@
 # Changelog
 
+## 1.1.1
+
+### Fixes
+
+* Fixed the generator silently overwriting existing generated files on a repeated `create` run. Files that already exist are now skipped by default, with a `⚠️  Skipped (already exists): ...` message printed for each one.
+* Fixed `create` accepting any feature name without validation. Empty, malformed, or path-traversal input (e.g. `../evil`) is now rejected with a clear error before anything is written to disk.
+* Fixed `pascalCase` conversion only handling `snake_case` input. `kebab-case` and `camelCase` feature names (e.g. `user-profile`, `userProfile`) now produce the correct class name.
+* Fixed the CLI crashing with a raw stack trace on an unknown `--template` or an invalid feature name. Both now print a clean `❌ ...` error message instead.
+
+### New Features
+
+* Added a `--force` / `-f` flag to explicitly overwrite existing generated files:
+
+  ```bash
+  dart run flutter_feature_cli create authentication --force
+  ```
+
+### Improvements
+
+* Feature names are now normalized to a consistent `snake_case` for generated folder and file names regardless of how they're typed — `UserProfile`, `user-profile`, and `userProfile` all generate identical output.
+
 ## 1.1.0
 
 ### New Features

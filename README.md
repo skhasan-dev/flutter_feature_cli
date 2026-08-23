@@ -19,6 +19,8 @@ A lightweight CLI tool that scaffolds feature modules using popular architectura
 * Supports command-level path overrides
 * Auto-generates barrel exports (`index.dart`)
 * Reduces repetitive boilerplate code
+* Accepts `snake_case`, `kebab-case`, or `camelCase` feature names — normalized consistently either way
+* Never overwrites existing generated files unless `--force` is passed
 * Fully tested and production-ready
 
 ---
@@ -29,7 +31,7 @@ Add the package to your Flutter project:
 
 ```yaml
 dev_dependencies:
-  flutter_feature_cli: ^1.1.0
+  flutter_feature_cli: ^1.1.1
 ```
 
 Install dependencies:
@@ -199,6 +201,26 @@ The command-line path always takes precedence over the path configured in `pubsp
 
 ---
 
+## 🛡 Overwrite Protection
+
+By default, `create` never overwrites a file that already exists — safe to re-run on a feature you've already started editing:
+
+```bash
+dart run flutter_feature_cli create authentication
+```
+
+```text
+⚠️  Skipped (already exists): lib/features/authentication/data/repository/authentication_repository.dart
+```
+
+Pass `--force` (or `-f`) to explicitly overwrite existing generated files:
+
+```bash
+dart run flutter_feature_cli create authentication --force
+```
+
+---
+
 ## 💻 Commands
 
 Generate a feature:
@@ -219,6 +241,13 @@ Generate a feature in a custom location:
 ```bash
 dart run flutter_feature_cli create <feature_name> \
   --path <path>
+```
+
+Overwrite existing generated files:
+
+```bash
+dart run flutter_feature_cli create <feature_name> \
+  --force
 ```
 
 Available templates:
