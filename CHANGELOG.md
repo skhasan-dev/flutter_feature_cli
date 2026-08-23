@@ -1,5 +1,23 @@
 # Changelog
 
+## 1.2.0
+
+### New Features
+
+* Added a `custom` template, letting you declare your own folder/file structure under `flutter_feature_cli: custom:` in `pubspec.yaml` instead of using one of the built-in templates:
+
+  ```yaml
+  flutter_feature_cli:
+    template: custom
+    custom:
+      presentation/views:
+        - "{feature}_view.dart"
+  ```
+
+  ```bash
+  dart run flutter_feature_cli create authentication -t custom
+  ```
+
 ## 1.1.1
 
 ### Fixes

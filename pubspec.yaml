@@ -1,6 +1,6 @@
 name: flutter_feature_cli
 description: A Flutter CLI for generating feature modules using Partial Clean Architecture, Clean Architecture, MVC, and MVVM templates.
-version: 1.1.1
+version: 1.2.0
 
 repository: https://github.com/skhasan-dev/flutter_feature_cli
 homepage: https://github.com/skhasan-dev/flutter_feature_cli

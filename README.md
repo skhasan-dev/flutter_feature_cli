@@ -15,6 +15,7 @@ A lightweight CLI tool that scaffolds feature modules using popular architectura
   * Clean Architecture
   * MVC
   * MVVM
+  * Custom (define your own folder/file structure via `pubspec.yaml`)
 * Configurable output path via `pubspec.yaml`
 * Supports command-level path overrides
 * Auto-generates barrel exports (`index.dart`)
@@ -31,7 +32,7 @@ Add the package to your Flutter project:
 
 ```yaml
 dev_dependencies:
-  flutter_feature_cli: ^1.1.1
+  flutter_feature_cli: ^1.2.0
 ```
 
 Install dependencies:
@@ -173,6 +174,107 @@ authentication/
 
 ---
 
+### Custom
+
+Define your own folder/file structure in `pubspec.yaml` instead of using one of
+the built-in templates. Keys are folder paths relative to the feature root;
+values are the explicit list of filenames to create in each folder. Use
+`{feature}` in a filename as a placeholder for the (normalized) feature name.
+
+```yaml
+flutter_feature_cli:
+  template: custom
+  custom:
+    data/data_sources:
+      - "{feature}_data_source.dart"
+    domain/entities:
+      - "{feature}_entity.dart"
+    presentation/views:
+      - "{feature}_view.dart"
+      - "{feature}_view_state.dart"
+    presentation/widgets: []
+```
+
+```bash
+dart run flutter_feature_cli create authentication -t custom
+```
+
+Generated structure:
+
+```text
+authentication/
+├── data/
+│   ├── data_sources/
+│   │   ├── authentication_data_source.dart
+│   │   └── index.dart
+│   └── index.dart
+├── domain/
+│   ├── entities/
+│   │   ├── authentication_entity.dart
+│   │   └── index.dart
+│   └── index.dart
+├── presentation/
+│   ├── views/
+│   │   ├── authentication_view.dart
+│   │   ├── authentication_view_state.dart
+│   │   └── index.dart
+│   ├── widgets/
+│   │   └── index.dart
+│   └── index.dart
+└── index.dart
+```
+
+Every folder — including ones only implied by nesting, like `data/` above —
+gets its own barrel `index.dart`, matching the other templates. An empty file
+list (like `presentation/widgets` above) still creates the folder with just a
+barrel file.
+
+#### Directories only, no generated files
+
+To get a folder without any generated `{feature}_*.dart` stub — just the
+directory itself — give it an empty list:
+
+```yaml
+flutter_feature_cli:
+  template: custom
+  custom:
+    core/constants: []
+    core/utils: []
+```
+
+This creates `core/constants/` and `core/utils/` with no other files inside.
+Note that a bare `index.dart` (empty content) is still generated in each one —
+that's intentional, both to match the barrel-export convention every other
+template follows and because git can't track a truly empty directory.
+
+#### A folder with both files and a subfolder
+
+A folder can own files *and* have a subfolder — declare the parent path with
+its own files, and the nested path separately:
+
+```yaml
+flutter_feature_cli:
+  template: custom
+  custom:
+    test1:
+      - "{feature}_test1.dart"
+    test1/sub:
+      - "{feature}_sub.dart"
+```
+
+```text
+test1/
+├── sub/
+│   ├── {feature}_sub.dart
+│   └── index.dart
+├── {feature}_test1.dart
+└── index.dart
+```
+
+`test1/index.dart` exports both: its own file first, then `sub/index.dart`.
+
+---
+
 ## 🎯 Custom Output Path
 
 Override the configured path directly from the command:
@@ -257,13 +359,14 @@ partial_clean
 clean_architecture
 mvc
 mvvm
+custom
 ```
 
 ---
 
 ## 🛣 Roadmap
 
-* Custom templates via `pubspec.yaml`
+* ~~Custom templates via `pubspec.yaml`~~ ✅ Done
 * Entity generation
 * CRUD scaffolding
 * Project setup command
