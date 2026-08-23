@@ -7,6 +7,7 @@ import 'package:flutter_feature_cli/src/generator/index.dart'
 import 'package:flutter_feature_cli/src/templates/index.dart'
     show
         CleanArchitectureTemplate,
+        CustomTemplate,
         MvcTemplate,
         MvvmTemplate,
         PartialCleanTemplate,
@@ -62,6 +63,7 @@ Future<void> _handleCreate(List<String> args) async {
       TemplateNames.cleanArchitecture: CleanArchitectureTemplate(),
       TemplateNames.mvc: MvcTemplate(),
       TemplateNames.mvvm: MvvmTemplate(),
+      TemplateNames.custom: CustomTemplate(config.custom),
     }).generate(
       featureName: featureName,
       templateName: results['template'] as String,
@@ -98,6 +100,7 @@ Templates:
   clean_architecture
   mvc
   mvvm
+  custom (define folders/files under `flutter_feature_cli: custom:` in pubspec.yaml)
 
 Examples:
 
@@ -106,6 +109,8 @@ Examples:
   flutter_feature_cli create auth --template clean_architecture
 
   flutter_feature_cli create auth -t mvvm
+
+  flutter_feature_cli create auth -t custom
 
   flutter_feature_cli create auth --path lib/src/features
 

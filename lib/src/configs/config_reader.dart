@@ -37,6 +37,51 @@ class ConfigReader {
     return CliConfig(
       path: config['path']?.toString() ?? 'lib/features',
       template: config['template']?.toString() ?? 'partial_clean',
+      custom: _readCustom(config['custom']),
     );
+  }
+
+  /// Converts the `custom` YAML block (folder path -> list of filenames)
+  /// into a plain `Map<String, List<String>>`, or `null` if absent.
+  static Map<String, List<String>>? _readCustom(dynamic custom) {
+    if (custom == null) return null;
+
+    if (custom is! YamlMap) {
+      throw const FormatException(
+        '''
+❌ Invalid `custom` configuration in pubspec.yaml.
+
+`custom` must map folder paths to a list of filenames, e.g.:
+
+flutter_feature_cli:
+  template: custom
+  custom:
+    presentation/views:
+      - "{feature}_view.dart"
+''',
+      );
+    }
+
+    return custom.map((key, value) {
+      if (value is! YamlList) {
+        throw FormatException(
+          '''
+❌ Invalid `custom` configuration for "$key" in pubspec.yaml.
+
+Expected a list of filenames, e.g.:
+
+flutter_feature_cli:
+  custom:
+    $key:
+      - "{feature}_$key.dart"
+''',
+        );
+      }
+
+      return MapEntry(
+        key.toString(),
+        value.map((e) => e.toString()).toList(),
+      );
+    });
   }
 }
