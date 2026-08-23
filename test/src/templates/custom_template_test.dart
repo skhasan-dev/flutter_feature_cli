@@ -157,7 +157,8 @@ void main() {
       expect(content.contains("export 'domain/index.dart';"), true);
     });
 
-    test('folder with no declared files still gets a bare index.dart', () async {
+    test('folder with no declared files still gets a bare index.dart',
+        () async {
       await CustomTemplate({
         'presentation/widgets': <String>[],
       }).generate(
